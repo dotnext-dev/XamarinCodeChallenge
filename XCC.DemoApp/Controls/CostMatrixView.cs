@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 
 using Xamarin.Forms;
 using XCC.Contracts;
@@ -17,6 +17,23 @@ namespace XCC.DemoApp.Controls
         {
             HorizontalOptions = LayoutOptions.Fill;
             VerticalOptions = LayoutOptions.Fill;
+        }
+
+        /// <summary>
+        /// The is valid property.
+        /// </summary>
+        public static readonly BindableProperty IsValidProperty =
+            BindableProperty.Create(
+                "IsValid", typeof(bool), typeof(CostMatrixView), defaultValue: true);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="T:XCC.DemoApp.Controls.CostMatrixView"/> is valid.
+        /// </summary>
+        /// <value><c>true</c> if is valid; otherwise, <c>false</c>.</value>
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
         }
 
         /// <summary>
@@ -130,12 +147,12 @@ namespace XCC.DemoApp.Controls
                 if(pathMatch)
                 {
                     cell.IsPartOfLowestCostPath = true;
-                    cell.IsValid = path.IsValid;
+                    cell.IsPathValid = path.IsValid;
                 }
                 else
                 {
                     cell.IsPartOfLowestCostPath = false;
-                    cell.IsValid = true;
+                    cell.IsPathValid = true;
                 }
 
             }   
@@ -181,6 +198,15 @@ namespace XCC.DemoApp.Controls
             }
         }
 
+
+        /// <summary>
+        /// Updates the state.
+        /// </summary>
+        public void UpdateMatrixState()
+        {
+            //TODO: can be to Any for efficiency?
+            IsValid = Children.OfType<MatrixCell>().All(c => c.IsTextValid);
+        }
     }
 }
 

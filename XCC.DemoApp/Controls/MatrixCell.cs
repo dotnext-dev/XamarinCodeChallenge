@@ -12,9 +12,7 @@ namespace XCC.DemoApp.Controls
         public MatrixCell()
         {
             HorizontalTextAlignment = TextAlignment.Center;
-            //VerticalTextAlignment = TextAlignment.Center;
             MaxLength = 3;
-            Keyboard = Keyboard.Numeric;
         }
 
         #region properties
@@ -38,10 +36,12 @@ namespace XCC.DemoApp.Controls
         /// </summary>
         protected virtual void UpdateStyle()
         {
-            if (IsPartOfLowestCostPath && IsValid)
-                BackgroundColor = Color.Green;
-            else if (IsPartOfLowestCostPath)
+            if (!IsTextValid)
                 BackgroundColor = Color.Red;
+            else if (IsPartOfLowestCostPath && IsPathValid)
+                BackgroundColor = Color.FromHex("#aa00ff00");
+            else if (IsPartOfLowestCostPath)
+                BackgroundColor = Color.FromHex("#aaff0000");
             else
                 BackgroundColor = Color.Transparent;
 
@@ -89,19 +89,19 @@ namespace XCC.DemoApp.Controls
         /// <summary>
         /// Determines whether current cell is part of valid path.
         /// </summary>
-        public static readonly BindableProperty IsValidProperty =
+        public static readonly BindableProperty IsPathValidProperty =
             BindableProperty.Create(
-            "IsValid", typeof(bool), typeof(MatrixCell),
-            defaultValue: true, propertyChanged: OnIsValidChanged);
+            "IsPathValid", typeof(bool), typeof(MatrixCell),
+            defaultValue: true, propertyChanged: OnIsPathValidChanged);
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="T:XCC.DemoApp.Controls.MatrixCell"/> is part of valid path.
         /// </summary>
         /// <value><c>true</c> if is valid; otherwise, <c>false</c>.</value>
-        public bool IsValid
+        public bool IsPathValid
         {
-            get { return (bool)GetValue(IsValidProperty); }
-            set { SetValue(IsValidProperty, value); }
+            get { return (bool)GetValue(IsPathValidProperty); }
+            set { SetValue(IsPathValidProperty, value); }
         }
 
         /// <summary>
@@ -110,10 +110,29 @@ namespace XCC.DemoApp.Controls
         /// <param name="bindable">Bindable.</param>
         /// <param name="oldValue">Old value.</param>
         /// <param name="newValue">New value.</param>
-        static void OnIsValidChanged(BindableObject bindable, object oldValue, object newValue)
+        static void OnIsPathValidChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((MatrixCell)bindable).UpdateStyle();
         }
+
+        /// <summary>
+        /// The is text valid property.
+        /// </summary>
+        public static readonly BindableProperty IsTextValidProperty =
+            BindableProperty.Create(
+                "IsTextValid", typeof(bool), typeof(MatrixCell),
+                defaultValue: true);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="T:XCC.DemoApp.Controls.MatrixCell"/> is text valid.
+        /// </summary>
+        /// <value><c>true</c> if is text valid; otherwise, <c>false</c>.</value>
+        public bool IsTextValid
+        {
+            get { return (bool)GetValue(IsTextValidProperty); }
+            set { SetValue(IsTextValidProperty, value); }
+        }
+
 
         #endregion
 
@@ -142,17 +161,20 @@ namespace XCC.DemoApp.Controls
 
             if (propertyName == nameof(Text))
             {
-                UpdateStyle();
-
                 if(Parent is CostMatrixView matrixView)
                 {
                     var costMatrix = matrixView.MatrixSource;
                     if (costMatrix != null)
                     {
                         costMatrix[Row, Column] = Text.ToCostValue();
-                        Text = costMatrix[Row, Column].ToString();
+                        IsTextValid = string.Equals(Text,
+                                      costMatrix[Row, Column].ToString(),
+                                      StringComparison.OrdinalIgnoreCase);
+                        matrixView.UpdateMatrixState();
                     }    
                 }
+
+                UpdateStyle();
             }    
         }
 

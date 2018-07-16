@@ -4,9 +4,11 @@
              xmlns:ctrls="clr-namespace:XCC.DemoApp.Controls"
              x:Class="XCC.DemoApp.MainPage">
     <ctrls:ResponsiveGrid>
-        <ctrls:CostMatrixView BackgroundColor="#55DDDDDD" 
-                              MatrixSource="{Binding CurrentCostMatrix}"
-                              CostPath="{Binding LowestCostPath}" />
+        <ctrls:CostMatrixView 
+                x:Name="costMatrixView"
+                BackgroundColor="#55DDDDDD" 
+                MatrixSource="{Binding CurrentCostMatrix}"
+                CostPath="{Binding LowestCostPath}" />
         <Grid Padding="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="15*" />
@@ -48,6 +50,7 @@
                      BackgroundColor="Teal"
                      TextColor="White"
                      Text="Calculate Path"
+                     IsEnabled="{Binding IsValid, Source={x:Reference costMatrixView}}"
                      Command="{Binding CalculatePathCommand}"/>
 
             <Button  Grid.Row="3" Grid.Column="0" 
