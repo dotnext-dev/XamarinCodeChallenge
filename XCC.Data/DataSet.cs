@@ -2,7 +2,7 @@
 namespace XCC.Data
 {
     /// <summary>
-    /// Represents a set of data represending sample input and expected output
+    /// Represents a set of data representing sample input and expected output
     /// <remarks>Mostly will be used for unit-tests or mock-data for demo</remarks>
     /// </summary>
     public class DataSet
