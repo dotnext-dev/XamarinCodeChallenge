@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ctrls="clr-namespace:XCC.DemoApp.Controls"
+             x:Class="XCC.DemoApp.MainPage">
+    <ctrls:ResponsiveGrid>
+        <ctrls:CostMatrixView BackgroundColor="#55DDDDDD" 
+                              MatrixSource="{Binding CurrentCostMatrix}"
+                              CostPath="{Binding LowestCostPath}" />
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15*" />
+                <RowDefinition Height="15*" />
+                <RowDefinition Height="15*" />
+                <RowDefinition Height="15*" />
+                <RowDefinition Height="40*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Row="0" Grid.Column="0" 
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding Value, StringFormat='{0} rows', Source={x:Reference rowCountStepper}}" /> 
+            <Stepper x:Name="rowCountStepper"
+                     Grid.Row="1" Grid.Column="0" 
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Minimum="1" Maximum="10" 
+                     Value="{Binding RowCount}" />
+            
+            <Label Grid.Row="0" Grid.Column="1" 
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding Value, StringFormat='{0} columns', Source={x:Reference colCountStepper}}" /> 
+            <Stepper x:Name="colCountStepper"
+                     Grid.Row="1" Grid.Column="1"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Minimum="1" Maximum="10" 
+                     Value="{Binding ColumnCount}" />
+
+            <Button  Grid.Row="2" Grid.ColumnSpan="2" 
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     BackgroundColor="Teal"
+                     TextColor="White"
+                     Text="Calculate Path"
+                     Command="{Binding CalculatePathCommand}"/>
+
+            <Button  Grid.Row="3" Grid.Column="0" 
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Text="Load Sample 1"
+                     Command="{Binding LoadSampleCommand}"
+                     CommandParameter="1" />
+
+            <Button  Grid.Row="3" Grid.Column="1" 
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Text="Load Sample 2"
+                     Command="{Binding LoadSampleCommand}"
+                     CommandParameter="2" />
+
+            <StackLayout Grid.Row="4" Grid.ColumnSpan="2"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill">
+                <Label Text="Result:" 
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Center"
+                       VerticalOptions="Center"
+                       BackgroundColor="DarkGray"
+                       TextColor="White" />
+                
+                <Label Text="{Binding LowestCostPath, StringFormat='{0}'}" />
+            </StackLayout>
+        </Grid>
+    </ctrls:ResponsiveGrid>
+</ContentPage>

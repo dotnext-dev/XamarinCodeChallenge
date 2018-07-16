@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6A9D5647-CD9D-4C4E-9693-A510B35D8E57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>XCC.Utilities.Tests</RootNamespace>
+    <AssemblyName>XCC.Utilities.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Parsers\StringInputParserTests.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Data\TestCaseSource.cs" />
+    <Compile Include="PathProviders\PathProviderTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XCC.Contracts\XCC.Contracts.csproj">
+      <Project>{9D8517D6-8DCC-4C30-97E3-CA4A3F2CF369}</Project>
+      <Name>XCC.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XCC.Utilities\XCC.Utilities.csproj">
+      <Project>{68FB2CC4-ED87-4A04-8BBF-9F332BA6F963}</Project>
+      <Name>XCC.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XCC.Data\XCC.Data.csproj">
+      <Project>{13549264-8068-4BD2-B3E4-34202E1BFE9B}</Project>
+      <Name>XCC.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parsers\" />
+    <Folder Include="Data\" />
+    <Folder Include="PathProviders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
